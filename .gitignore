@@ -3,3 +3,7 @@ mods/**
 build/**
 repos/**
 logs/**
+.gradle/**
+config/**
+crash-reports/**
+options.txt
