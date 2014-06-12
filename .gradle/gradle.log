@@ -1,0 +1,106 @@
+****************************
+ Powered By MCP:            
+ http://mcp.ocean-labs.de/  
+ Searge, ProfMobius, Fesh0r,
+ R4wk, ZeuX, IngisKahn      
+ MCP Data version : unknown
+****************************
+:compileApiJava UP-TO-DATE
+:compileApiScala UP-TO-DATE
+:processApiResources UP-TO-DATE
+:apiClasses UP-TO-DATE
+:sourceMainJava UP-TO-DATE
+:compileJava UP-TO-DATE
+:sourceMainScala
+:compileScala
+[ant:scalac] Element 'C:\Users\houshja\Desktop\rmod\build\classes\api' does not exist.
+[ant:scalac] Element 'C:\Users\houshja\Desktop\rmod\build\resources\api' does not exist.
+:processResources UP-TO-DATE
+:classes
+:jar
+:runClient
+[14:22:16] [main/INFO] [LaunchWrapper]: Loading tweak class name cpw.mods.fml.common.launcher.FMLTweaker
+[14:22:16] [main/INFO] [LaunchWrapper]: Using primary tweak class name cpw.mods.fml.common.launcher.FMLTweaker
+[14:22:16] [main/INFO] [LaunchWrapper]: Calling tweak class cpw.mods.fml.common.launcher.FMLTweaker
+[14:22:16] [main/INFO] [FML]: Forge Mod Loader version 7.2.116.1024 for Minecraft 1.7.2 loading
+[14:22:16] [main/INFO] [FML]: Java is Java HotSpot(TM) 64-Bit Server VM, version 1.7.0_25, running on Windows 7:amd64:6.1, installed at C:\Program Files\Java\jdk1.7.0_25\jre
+[14:22:16] [main/INFO] [FML]: Managed to load a deobfuscated Minecraft name- we are in a deobfuscated environment. Skipping runtime deobfuscation
+[14:22:16] [main/INFO] [LaunchWrapper]: Loading tweak class name cpw.mods.fml.common.launcher.FMLInjectionAndSortingTweaker
+[14:22:16] [main/INFO] [LaunchWrapper]: Loading tweak class name cpw.mods.fml.common.launcher.FMLDeobfTweaker
+[14:22:16] [main/INFO] [LaunchWrapper]: Calling tweak class cpw.mods.fml.common.launcher.FMLInjectionAndSortingTweaker
+[14:22:16] [main/INFO] [LaunchWrapper]: Calling tweak class cpw.mods.fml.common.launcher.FMLInjectionAndSortingTweaker
+[14:22:16] [main/INFO] [LaunchWrapper]: Calling tweak class cpw.mods.fml.relauncher.CoreModManager$FMLPluginWrapper
+[14:22:16] [main/ERROR] [FML]: The binary patch set is missing. Either you are in a development environment, or things are not going to work!
+[14:22:16] [main/ERROR] [FML]: The minecraft jar file:/C:/Users/houshja/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.2-10.12.0.1024/forgeSrc-1.7.2-10.12.0.1024.jar!/net/minecraft/client/ClientBrandRetriever.class appears to be corrupt! There has been CRITICAL TAMPERING WITH MINECRAFT, it is highly unlikely minecraft will work! STOP NOW, get a clean copy and try again!
+[14:22:16] [main/ERROR] [FML]: FML has been ordered to ignore the invalid or missing minecraft certificate. This is very likely to cause a problem!
+[14:22:16] [main/ERROR] [FML]: Technical information: ClientBrandRetriever was at jar:file:/C:/Users/houshja/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.2-10.12.0.1024/forgeSrc-1.7.2-10.12.0.1024.jar!/net/minecraft/client/ClientBrandRetriever.class, there were 0 certificates for it
+[14:22:16] [main/ERROR] [FML]: FML appears to be missing any signature data. This is not a good thing
+[14:22:16] [main/INFO] [LaunchWrapper]: Calling tweak class cpw.mods.fml.relauncher.CoreModManager$FMLPluginWrapper
+[14:22:16] [main/INFO] [LaunchWrapper]: Calling tweak class cpw.mods.fml.common.launcher.FMLDeobfTweaker
+[14:22:17] [main/INFO] [LaunchWrapper]: Launching wrapped minecraft {net.minecraft.client.main.Main}
+[14:22:18] [main/INFO]: Setting user: Player946
+Completely ignored arguments: [--version 1.7, ]
+[14:22:20] [Client thread/INFO]: LWJGL Version: 2.9.1
+[14:22:20] [Client thread/INFO] [MinecraftForge]: Attempting early MinecraftForge initialization
+[14:22:20] [Client thread/INFO] [FML]: MinecraftForge v10.12.0.1024 Initialized
+[14:22:20] [Client thread/INFO] [FML]: Replaced 128 ore recipies
+[14:22:20] [Client thread/INFO] [MinecraftForge]: Completed early MinecraftForge initialization
+[14:22:21] [Client thread/INFO] [FML]: Searching C:\Users\houshja\Desktop\rmod\mods for mods
+[14:22:22] [Client thread/ERROR] [FML]: FML has detected a mod that is using a package name based on 'net.minecraft.src' : net.minecraft.src.FMLRenderAccessLibrary. This is generally a severe programming error.  There should be no mod code in the minecraft namespace. MOVE YOUR MOD! If you're in eclipse, select your source code and 'refactor' it into a new package. Go on. DO IT NOW!
+[14:22:24] [Client thread/INFO] [FML]: Forge Mod Loader has identified 4 mods to load
+[14:22:24] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:ExampleMod
+[14:22:25] [Client thread/INFO] [FML]: Configured a dormant chunk cache size of 0
+
+Starting up SoundSystem...
+Initializing LWJGL OpenAL
+    (The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org)
+OpenAL initialized.
+
+[14:22:27] [Sound Library Loader/INFO]: Sound engine started
+[14:22:27] [Client thread/INFO]: Created: 512x256 textures/blocks-atlas
+[14:22:28] [Client thread/INFO]: Created: 256x256 textures/items-atlas
+[14:22:28] [Client thread/INFO] [ExampleMod]: testing one two
+[14:22:28] [Client thread/INFO] [ExampleMod]: ActuatorBlock ID: 165
+[14:22:28] [Client thread/INFO] [FML]: Forge Mod Loader has successfully loaded 4 mods
+[14:22:29] [MCO Availability Checker #1/ERROR]: Couldn't connect to Realms
+[14:22:54] [Server thread/INFO]: Starting integrated minecraft server version 1.7.2
+[14:22:54] [Server thread/INFO]: Generating keypair
+[14:22:54] [Server thread/INFO] [FML]: Injecting new block and item data into this server instance
+[14:22:54] [Server thread/INFO] [FML]: Loading dimension 0 (New World) (net.minecraft.server.integrated.IntegratedServer@22714261)
+[14:22:54] [Server thread/INFO] [FML]: Loading dimension 1 (New World) (net.minecraft.server.integrated.IntegratedServer@22714261)
+[14:22:55] [Server thread/INFO] [FML]: Loading dimension -1 (New World) (net.minecraft.server.integrated.IntegratedServer@22714261)
+[14:22:55] [Server thread/INFO]: Preparing start region for level 0
+[14:22:56] [Server thread/INFO]: Preparing spawn area: 68%
+[14:22:56] [Netty Client IO #0/INFO] [FML]: Server protocol version 1
+[14:22:56] [Netty IO #1/INFO] [FML]: Client protocol version 1
+[14:22:56] [Netty IO #1/INFO] [FML]: Client attempting to join with 4 mods : mcp@8.09,FML@7.2.116.1024,Forge@10.12.0.1024,ExampleMod@0.0.0
+[14:22:56] [Netty IO #1/INFO] [FML]: Attempting connection with missing mods [] at CLIENT
+[14:22:56] [Netty Client IO #0/INFO] [FML]: Attempting connection with missing mods [] at SERVER
+[14:22:56] [Server thread/INFO] [FML]: [Server thread] Server side modded connection established
+[14:22:56] [Client thread/INFO] [FML]: [Client thread] Client side modded connection established
+[14:22:56] [Server thread/INFO]: Player946[local:E:f84ba692] logged in with entity id 278 at (115.34732118491462, 72.0, 266.7527875042096)
+[14:22:56] [Server thread/INFO]: Player946 joined the game
+[14:22:59] [Server thread/INFO]: Player946 has just earned the achievement [Taking Inventory]
+[14:22:59] [Client thread/INFO]: [CHAT] Player946 has just earned the achievement [Taking Inventory]
+[14:24:23] [Server thread/INFO]: Saving and pausing game...
+[14:24:23] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[14:24:23] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[14:24:24] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[14:24:24] [Server thread/INFO]: Stopping server
+[14:24:24] [Server thread/INFO]: Saving players
+[14:24:24] [Server thread/INFO]: Saving worlds
+[14:24:24] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[14:24:24] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[14:24:24] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[14:24:25] [Server thread/INFO] [FML]: Unloading dimension 0
+[14:24:25] [Server thread/INFO] [FML]: Unloading dimension -1
+[14:24:25] [Server thread/INFO] [FML]: Unloading dimension 1
+[14:24:27] [Client thread/INFO]: Stopping!
+
+SoundSystem shutting down...
+    Author: Paul Lamb, www.paulscode.com
+
+
+BUILD SUCCESSFUL
+
+Total time: 2 mins 31.011 secs
