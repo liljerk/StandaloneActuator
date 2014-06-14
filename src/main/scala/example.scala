@@ -38,41 +38,41 @@ import com.laodmods.util.LocalFakePlayer
 import com.laodmods.util.LocalFakePlayerFactory
 
 class MyGH extends IGuiHandler{
-	NetworkRegistry.INSTANCE.registerGuiHandler(StandaloneActuator.instance, this)
+  NetworkRegistry.INSTANCE.registerGuiHandler(StandaloneActuator.instance, this)
 
-	def getServerGuiElement(id: Int, p: EntityPlayer, w: World, x: Int, y: Int, z: Int): Object = {
-		new ActuatorContainer(p,w.getTileEntity(x,y,z).asInstanceOf[MyTE])
-	}
-	def getClientGuiElement(id: Int, p: EntityPlayer, w: World, x: Int, y: Int, z: Int): Object = {
-		new ActuatorGUI(new ActuatorContainer(p,w.getTileEntity(x,y,z).asInstanceOf[MyTE]))
-	}
+  def getServerGuiElement(id: Int, p: EntityPlayer, w: World, x: Int, y: Int, z: Int): Object = {
+    new ActuatorContainer(p,w.getTileEntity(x,y,z).asInstanceOf[MyTE])
+  }
+  def getClientGuiElement(id: Int, p: EntityPlayer, w: World, x: Int, y: Int, z: Int): Object = {
+    new ActuatorGUI(new ActuatorContainer(p,w.getTileEntity(x,y,z).asInstanceOf[MyTE]))
+  }
 }
 
 class ActuatorContainer(p: EntityPlayer, te: MyTE) extends Container{
 
-	addSlotToContainer(new Slot(p.inventory, 0, 10, 10))
-	addSlotToContainer(new Slot(te, 0, 38, 10))
+  addSlotToContainer(new Slot(p.inventory, 0, 10, 10))
+  addSlotToContainer(new Slot(te, 0, 38, 10))
 
-	def canInteractWith(p: EntityPlayer): Boolean = {
-		true
-	}
+  def canInteractWith(p: EntityPlayer): Boolean = {
+    true
+  }
 }
 
 @SideOnly(Side.CLIENT)
 class ActuatorGUI(c: Container) extends GuiContainer(c){
-	val texture: ResourceLocation = new ResourceLocation("textures/gui/actuator.png")
-	def drawGuiContainerBackgroundLayer(x: Float, y: Int, z: Int){
-		mc.getTextureManager().bindTexture(texture)
-		val xo = (width - xSize)/2
-		val yo = (height - ySize)/2
-		drawTexturedModalRect(xo, yo, 0, 0, xSize, ySize)
-	}
+  val texture: ResourceLocation = new ResourceLocation("textures/gui/actuator.png")
+  def drawGuiContainerBackgroundLayer(x: Float, y: Int, z: Int){
+    mc.getTextureManager().bindTexture(texture)
+    val xo = (width - xSize)/2
+    val yo = (height - ySize)/2
+    drawTexturedModalRect(xo, yo, 0, 0, xSize, ySize)
+  }
 }
 
 class MyTE extends TileEntity with IInventory{
   var neighbors: List[(Int, Int, Block, TileEntity)] = null
   var ticks: Int = 0
-	var inventory: Array[ItemStack] = new Array[ItemStack](1)
+  var inventory: Array[ItemStack] = new Array[ItemStack](1)
 
   override def updateEntity{
     if (ticks % 10 == 0 || neighbors == null) getNeighbors
@@ -91,40 +91,40 @@ class MyTE extends TileEntity with IInventory{
       .map{ c => ( c(0), c(1), worldObj.getBlock(c(0), yCoord, c(1)), worldObj.getTileEntity(c(0),yCoord,c(1)) ) }
   }
 
-	def closeInventory(){
-	}
+  def closeInventory(){
+  }
 
-	def decrStackSize(x$1: Int,x$2: Int): net.minecraft.item.ItemStack = {
-		inventory(0).stackSize -= 1
-		inventory(0)
-	}
+  def decrStackSize(x$1: Int,x$2: Int): net.minecraft.item.ItemStack = {
+    inventory(0).stackSize -= 1
+    inventory(0)
+  }
 
-	def getInventoryName(): String = "Standalone Actuator"
+  def getInventoryName(): String = "Standalone Actuator"
 
-	def getInventoryStackLimit(): Int = 64
+  def getInventoryStackLimit(): Int = 64
 
-	def getSizeInventory(): Int = 1
+  def getSizeInventory(): Int = 1
 
-	def getStackInSlot(x$1: Int): net.minecraft.item.ItemStack = {
-		inventory(0)
-	}
+  def getStackInSlot(x$1: Int): net.minecraft.item.ItemStack = {
+    inventory(0)
+  }
 
-	def getStackInSlotOnClosing(x$1: Int): net.minecraft.item.ItemStack = {
-		null
-	}
+  def getStackInSlotOnClosing(x$1: Int): net.minecraft.item.ItemStack = {
+    null
+  }
 
-	def hasCustomInventoryName(): Boolean = true
+  def hasCustomInventoryName(): Boolean = true
 
-	def isItemValidForSlot(x$1: Int,x$2: net.minecraft.item.ItemStack): Boolean = true
+  def isItemValidForSlot(x$1: Int,x$2: net.minecraft.item.ItemStack): Boolean = true
 
-	def isUseableByPlayer(x$1: net.minecraft.entity.player.EntityPlayer): Boolean = true
+  def isUseableByPlayer(x$1: net.minecraft.entity.player.EntityPlayer): Boolean = true
 
-	def openInventory(){}
+  def openInventory(){}
 
-	def setInventorySlotContents(x$1: Int,x$2: net.minecraft.item.ItemStack){
-		inventory(0) = x$2
-		FMLLog.info("%s",inventory)
-	}
+  def setInventorySlotContents(x$1: Int,x$2: net.minecraft.item.ItemStack){
+    inventory(0) = x$2
+    FMLLog.info("%s",inventory)
+  }
 }
 
 class ActuatorBlock(mat: Material) extends BlockContainer(mat: Material){
@@ -139,11 +139,11 @@ class ActuatorBlock(mat: Material) extends BlockContainer(mat: Material){
     te.getNeighbors
   }
 
-	override def onBlockActivated(w: World, x: Int, y: Int, z: Int, p: EntityPlayer, side: Int, xo: Float, yo: Float, zo: Float): Boolean = {
-		StandaloneActuator.instance.log.info("Activated")
-		if (!w.isRemote) p.openGui(StandaloneActuator.instance, 1, w, x, y, z)
-		true
-	}
+  override def onBlockActivated(w: World, x: Int, y: Int, z: Int, p: EntityPlayer, side: Int, xo: Float, yo: Float, zo: Float): Boolean = {
+    StandaloneActuator.instance.log.info("Activated")
+    if (!w.isRemote) p.openGui(StandaloneActuator.instance, 1, w, x, y, z)
+    true
+  }
 }
 
 @Mod(modid = "StandaloneActuator", name = "Standalone Actuator", version = "0.0.1", modLanguage = "scala")
@@ -158,7 +158,7 @@ object StandaloneActuator {
 
   @EventHandler
   def init(e: FMLInitializationEvent) {
-		new MyGH()
+    new MyGH()
     val b = new ActuatorBlock(Material.rock)
                   .setHardness(1.0f)
                   .setStepSound(Block.soundTypeStone)
