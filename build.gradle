@@ -19,8 +19,8 @@ apply plugin: 'scala'
 apply plugin: 'forge'
 
 version = "1.0"
-group= "com.laod.examplemod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "ExampleMod"
+group= "com.laodmods.StandaloneActuator" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "StandaloneActuator"
 
 minecraft {
     version = "1.7.2-10.12.1.1118"

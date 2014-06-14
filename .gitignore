@@ -7,3 +7,4 @@ logs/**
 config/**
 crash-reports/**
 options.txt
+*.swp
