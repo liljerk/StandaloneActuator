@@ -49,14 +49,14 @@ public class LocalFakePlayer extends EntityPlayerMP
     @Override public void travelToDimension(int dim){ return; }
     @Override public void func_147100_a(C15PacketClientSettings pkt){ return; }
 
-		// We don't respond to any gui invocations
-		@Override public void displayGUIChest(IInventory par1IInventory) { return; }
-		@Override public void displayGUIAnvil(int par1, int par2, int par3) { return; }
-		@Override public void displayGUIEnchantment(int par1, int par2, int par3, java.lang.String par4Str) { return; }
-		@Override public void displayGUIWorkbench(int par1, int par2, int par3) { return; }
-		@Override public void func_146093_a(TileEntityHopper p_146093_1_) { return; }
-		@Override public void func_146098_a(TileEntityBrewingStand p_146098_1_) { return; }
-		@Override public void func_146101_a(TileEntityFurnace p_146101_1_) { return; }
-		@Override public void func_146102_a(TileEntityDispenser p_146102_1_) { return; }
-		@Override public void func_146104_a(TileEntityBeacon p_146104_1_) { return; }
+    // We don't respond to any gui invocations
+    @Override public void displayGUIChest(IInventory par1IInventory) { return; }
+    @Override public void displayGUIAnvil(int par1, int par2, int par3) { return; }
+    @Override public void displayGUIEnchantment(int par1, int par2, int par3, java.lang.String par4Str) { return; }
+    @Override public void displayGUIWorkbench(int par1, int par2, int par3) { return; }
+    @Override public void func_146093_a(TileEntityHopper p_146093_1_) { return; }
+    @Override public void func_146098_a(TileEntityBrewingStand p_146098_1_) { return; }
+    @Override public void func_146101_a(TileEntityFurnace p_146101_1_) { return; }
+    @Override public void func_146102_a(TileEntityDispenser p_146102_1_) { return; }
+    @Override public void func_146104_a(TileEntityBeacon p_146104_1_) { return; }
 }

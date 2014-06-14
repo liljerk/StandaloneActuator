@@ -40,17 +40,16 @@ class MyTE extends TileEntity{
     if (ticks == 19) ticks = 0
     if (ticks % 5 == 0) {
       val p = LocalFakePlayerFactory.getMinecraft(Minecraft.getMinecraft.getIntegratedServer.worldServerForDimension(0))
-			val ds = new ItemStack(Blocks.dirt)
-			p.inventory.setInventorySlotContents(0,ds)
+      val ds = new ItemStack(Blocks.dirt)
+      p.inventory.setInventorySlotContents(0,ds)
       neighbors.foreach{ n => n._3.onBlockActivated(worldObj, n._1, yCoord, n._2, p, 0, 0.1f, 0.0f, 0.0f)}
     }
     ticks += 1
   }
 
   def getNeighbors{
-    FMLLog.fine("neigh x: %s, z: %s", xCoord.toString, zCoord.toString)
     neighbors = List(List(xCoord-1,zCoord), List(xCoord+1,zCoord), List(xCoord,zCoord-1), List(xCoord,zCoord+1))
-			.map{ c => ( c(0), c(1), worldObj.getBlock(c(0), yCoord, c(1)), worldObj.getTileEntity(c(0),yCoord,c(1)) ) }
+      .map{ c => ( c(0), c(1), worldObj.getBlock(c(0), yCoord, c(1)), worldObj.getTileEntity(c(0),yCoord,c(1)) ) }
 
     FMLLog.fine("Neighbors: %s", neighbors)
   }
@@ -61,7 +60,7 @@ class ActuatorBlock(mat: Material) extends BlockContainer(mat: Material){
 
   def createNewTileEntity(w: World, i: Int) : TileEntity = {
     te = new MyTE
-		te
+    te
   }
 
   override def onBlockAdded(w: World, x: Int, y: Int, z: Int){
@@ -70,7 +69,7 @@ class ActuatorBlock(mat: Material) extends BlockContainer(mat: Material){
 }
 
 @Mod(modid = "StandaloneActuator", name = "Standalone Actuator", version = "0.0.1", modLanguage = "scala")
-object ExampleMod {
+object StandaloneActuator {
   var log: Logger = null
   var instance = this
 
@@ -82,11 +81,11 @@ object ExampleMod {
   @EventHandler
   def init(e: FMLInitializationEvent) {
     val b = new ActuatorBlock(Material.rock)
-									.setHardness(1.0f)
-									.setStepSound(Block.soundTypeStone)
-									.setBlockName("StandaloneActuator")
-									.setCreativeTab(CreativeTabs.tabBlock)
-		val t = new MyTE
+                  .setHardness(1.0f)
+                  .setStepSound(Block.soundTypeStone)
+                  .setBlockName("StandaloneActuator")
+                  .setCreativeTab(CreativeTabs.tabBlock)
+    val t = new MyTE
     GameRegistry.registerBlock(b, "StandaloneActuator")
     GameRegistry.registerTileEntity(t.getClass, "actuator")
     log.info("ActuatorBlock ID: " + Block.getIdFromBlock(b).toString)
