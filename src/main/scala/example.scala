@@ -79,9 +79,11 @@ class MyTE extends TileEntity with IInventory{
     if (ticks == 19) ticks = 0
     if (ticks % 5 == 0) {
       val p = LocalFakePlayerFactory.getMinecraft(Minecraft.getMinecraft.getIntegratedServer.worldServerForDimension(0))
-      val ds = new ItemStack(Blocks.dirt)
-      p.inventory.setInventorySlotContents(0,ds)
-      neighbors.foreach{ n => n._3.onBlockActivated(worldObj, n._1, yCoord, n._2, p, 0, 0.1f, 0.0f, 0.0f)}
+      val pi = p.inventory.getStackInSlot(0)
+      neighbors.foreach{
+        if( pi != null && pi.stackSize == 0 ) p.inventory.setInventorySlotContents(0, null)
+        if( p.inventory.getStackInSlot(0) == null && inventory(0) != null) p.inventory.setInventorySlotContents(0,decrStackSize(0,1))
+        n => n._3.onBlockActivated(worldObj, n._1, yCoord, n._2, p, 0, 0.1f, 0.0f, 0.0f)}
     }
     ticks += 1
   }
@@ -94,9 +96,17 @@ class MyTE extends TileEntity with IInventory{
   def closeInventory(){
   }
 
-  def decrStackSize(x$1: Int,x$2: Int): net.minecraft.item.ItemStack = {
-    inventory(0).stackSize -= 1
-    inventory(0)
+  def decrStackSize(slot: Int, i: Int): net.minecraft.item.ItemStack = {
+    if (inventory(0) == null) return null
+    val oldSize = inventory(0).stackSize
+    inventory(0).stackSize -= i
+    val newSize = inventory(0).stackSize
+    var newStack: ItemStack = null
+    if (oldSize > 0) newStack = inventory(0).copy
+    if (newSize >= 0) newStack.stackSize = i
+    if (newSize <= 0) inventory(0) = null
+    if (newSize < 0) newStack.stackSize = oldSize
+    newStack
   }
 
   def getInventoryName(): String = "Standalone Actuator"
@@ -105,8 +115,9 @@ class MyTE extends TileEntity with IInventory{
 
   def getSizeInventory(): Int = 1
 
-  def getStackInSlot(x$1: Int): net.minecraft.item.ItemStack = {
-    inventory(0)
+  def getStackInSlot(slot: Int): net.minecraft.item.ItemStack = slot match {
+      case 0 => inventory(0)
+      case _ => null
   }
 
   def getStackInSlotOnClosing(x$1: Int): net.minecraft.item.ItemStack = {
