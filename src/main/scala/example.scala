@@ -25,7 +25,7 @@ import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP, InventoryPlayer}
 import net.minecraft.init.Blocks
 import net.minecraft.inventory.{Container, IInventory, Slot}
-import net.minecraft.item.ItemStack
+import net.minecraft.item.{ItemBlock, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.server.MinecraftServer
 import net.minecraft.tileentity
@@ -50,8 +50,8 @@ class MyGH extends IGuiHandler{
 
 class ActuatorContainer(p: EntityPlayer, te: MyTE) extends Container{
 
-  addSlotToContainer(new Slot(p.inventory, 0, 10, 10))
-  addSlotToContainer(new Slot(te, 0, 38, 10))
+  for (yi <- 0 to 3; xi <- 0 to 8) addSlotToContainer(new Slot(p.inventory, yi * 9 + xi, xi * 18 + 10, yi * 18 + 38))
+  addSlotToContainer(new Slot(te, 0, 10, 10))
 
   def canInteractWith(p: EntityPlayer): Boolean = {
     true
@@ -70,7 +70,7 @@ class ActuatorGUI(c: Container) extends GuiContainer(c){
 }
 
 class MyTE extends TileEntity with IInventory{
-  var neighbors: List[(Int, Int, Block, TileEntity)] = null
+  var neighbors: List[(Int, Int, Block)] = null
   var ticks: Int = 0
   var inventory: Array[ItemStack] = new Array[ItemStack](1)
 
@@ -79,18 +79,26 @@ class MyTE extends TileEntity with IInventory{
     if (ticks == 19) ticks = 0
     if (ticks % 5 == 0) {
       val p = LocalFakePlayerFactory.getMinecraft(Minecraft.getMinecraft.getIntegratedServer.worldServerForDimension(0))
-      val pi = p.inventory.getStackInSlot(0)
-      neighbors.foreach{
-        if( pi != null && pi.stackSize == 0 ) p.inventory.setInventorySlotContents(0, null)
-        if( p.inventory.getStackInSlot(0) == null && inventory(0) != null) p.inventory.setInventorySlotContents(0,decrStackSize(0,1))
-        n => n._3.onBlockActivated(worldObj, n._1, yCoord, n._2, p, 0, 0.1f, 0.0f, 0.0f)}
+      for (n <- neighbors) {
+        if(worldObj.blockExists(n._1,yCoord,n._2)) {
+          if( p.inventory.getStackInSlot(0) != null && p.inventory.getStackInSlot(0).stackSize <= 0 ) p.inventory.setInventorySlotContents(0, null)
+          if( p.inventory.getStackInSlot(0) == null && inventory(0) != null) p.inventory.setInventorySlotContents(0,decrStackSize(0,1))
+          // FIXME: npe possible here if you break the block this thing is molesting
+          n._3.onBlockActivated(worldObj, n._1, yCoord, n._2, p, 0, 0.1f, 0.0f, 0.0f)
+        } else {
+          if(inventory(0) != null && inventory(0).stackSize > 0){
+            val ib = new ItemBlock(Block.getBlockFromItem(inventory(0).getItem))
+            if(ib != null) ib.placeBlockAt(decrStackSize(0,1), p, worldObj, n._1, yCoord, n._2, 0, 0.1f, 0.0f, 0.0f, 0)
+          }
+        }
+      }
     }
     ticks += 1
   }
 
   def getNeighbors{
     neighbors = List(List(xCoord-1,zCoord), List(xCoord+1,zCoord), List(xCoord,zCoord-1), List(xCoord,zCoord+1))
-      .map{ c => ( c(0), c(1), worldObj.getBlock(c(0), yCoord, c(1)), worldObj.getTileEntity(c(0),yCoord,c(1)) ) }
+      .map{ c => ( c(0), c(1), worldObj.getBlock(c(0), yCoord, c(1)) ) }
   }
 
   def closeInventory(){
@@ -100,7 +108,7 @@ class MyTE extends TileEntity with IInventory{
     if (inventory(0) == null) return null
     val oldSize = inventory(0).stackSize
     inventory(0).stackSize -= i
-    val newSize = inventory(0).stackSize
+    val newSize = oldSize - i
     var newStack: ItemStack = null
     if (oldSize > 0) newStack = inventory(0).copy
     if (newSize >= 0) newStack.stackSize = i
