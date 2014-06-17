@@ -1,6 +1,5 @@
 package com.laodmods.StandaloneActuator
 
-import cpw.mods.fml.common
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLPostInitializationEvent
@@ -16,25 +15,16 @@ import org.apache.logging.log4j.Logger
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockContainer
-import net.minecraft.block.BlockDirt
-import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.Material
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP, InventoryPlayer}
-import net.minecraft.init.Blocks
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.{Container, IInventory, Slot}
 import net.minecraft.item.{ItemBlock, ItemStack}
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.server.MinecraftServer
-import net.minecraft.tileentity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraft.world.World
-import net.minecraft.world.WorldServer
-
-import com.laodmods.util.LocalFakePlayer
 import com.laodmods.util.LocalFakePlayerFactory
 
 class MyGH extends IGuiHandler{
@@ -53,42 +43,40 @@ class ActuatorContainer(p: EntityPlayer, te: MyTE) extends Container{
   for (yi <- 0 to 3; xi <- 0 to 8) addSlotToContainer(new Slot(p.inventory, yi * 9 + xi, xi * 18 + 10, yi * 18 + 38))
   addSlotToContainer(new Slot(te, 0, 10, 10))
 
-  def canInteractWith(p: EntityPlayer): Boolean = {
-    true
-  }
+  def canInteractWith(p: EntityPlayer): Boolean = true
 }
 
 @SideOnly(Side.CLIENT)
 class ActuatorGUI(c: Container) extends GuiContainer(c){
   val texture: ResourceLocation = new ResourceLocation("textures/gui/actuator.png")
-  def drawGuiContainerBackgroundLayer(x: Float, y: Int, z: Int){
-    mc.getTextureManager().bindTexture(texture)
+  def drawGuiContainerBackgroundLayer(x: Float, y: Int, z: Int): Unit = {
+    mc.getTextureManager.bindTexture(texture)
     val xo = (width - xSize)/2
     val yo = (height - ySize)/2
     drawTexturedModalRect(xo, yo, 0, 0, xSize, ySize)
   }
 }
 
+case class Neighbor(xCoord: Int, zCoord: Int, block: Block)
+
 class MyTE extends TileEntity with IInventory{
-  var neighbors: List[(Int, Int, Block)] = null
   var ticks: Int = 0
   var inventory: Array[ItemStack] = new Array[ItemStack](1)
 
-  override def updateEntity{
-    if (ticks % 10 == 0 || neighbors == null) getNeighbors
+  override def updateEntity(): Unit = {
     if (ticks == 19) ticks = 0
     if (ticks % 5 == 0) {
       val p = LocalFakePlayerFactory.getMinecraft(Minecraft.getMinecraft.getIntegratedServer.worldServerForDimension(0))
-      for (n <- neighbors) {
-        if(worldObj.blockExists(n._1,yCoord,n._2)) {
+      getNeighbors().foreach { n =>
+        if(worldObj.blockExists(n.xCoord,yCoord,n.zCoord)) {
           if( p.inventory.getStackInSlot(0) != null && p.inventory.getStackInSlot(0).stackSize <= 0 ) p.inventory.setInventorySlotContents(0, null)
           if( p.inventory.getStackInSlot(0) == null && inventory(0) != null) p.inventory.setInventorySlotContents(0,decrStackSize(0,1))
           // FIXME: npe possible here if you break the block this thing is molesting
-          n._3.onBlockActivated(worldObj, n._1, yCoord, n._2, p, 0, 0.1f, 0.0f, 0.0f)
+          n.block.onBlockActivated(worldObj, n.xCoord, yCoord, n.zCoord, p, 0, 0.1f, 0.0f, 0.0f)
         } else {
           if(inventory(0) != null && inventory(0).stackSize > 0){
             val ib = new ItemBlock(Block.getBlockFromItem(inventory(0).getItem))
-            if(ib != null) ib.placeBlockAt(decrStackSize(0,1), p, worldObj, n._1, yCoord, n._2, 0, 0.1f, 0.0f, 0.0f, 0)
+            if(ib != null) ib.placeBlockAt(decrStackSize(0,1), p, worldObj, n.xCoord, yCoord, n.zCoord, 0, 0.1f, 0.0f, 0.0f, 0)
           }
         }
       }
@@ -96,15 +84,17 @@ class MyTE extends TileEntity with IInventory{
     ticks += 1
   }
 
-  def getNeighbors{
-    neighbors = List(List(xCoord-1,zCoord), List(xCoord+1,zCoord), List(xCoord,zCoord-1), List(xCoord,zCoord+1))
-      .map{ c => ( c(0), c(1), worldObj.getBlock(c(0), yCoord, c(1)) ) }
+  def getNeighbors(): List[Neighbor] = {
+    val coords = List((xCoord-1,zCoord), (xCoord+1,zCoord), (xCoord,zCoord-1), (xCoord,zCoord+1))
+    coords.map { case(x,z) =>
+      Neighbor(x, z, worldObj.getBlock(x, yCoord, z))
+    }
   }
 
-  def closeInventory(){
+  def closeInventory(): Unit = {
   }
 
-  def decrStackSize(slot: Int, i: Int): net.minecraft.item.ItemStack = {
+  def decrStackSize(slot: Int, i: Int): ItemStack = {
     if (inventory(0) == null) return null
     val oldSize = inventory(0).stackSize
     inventory(0).stackSize -= i
@@ -117,30 +107,30 @@ class MyTE extends TileEntity with IInventory{
     newStack
   }
 
-  def getInventoryName(): String = "Standalone Actuator"
+  val getInventoryName: String = "Standalone Actuator"
 
-  def getInventoryStackLimit(): Int = 64
+  val getInventoryStackLimit: Int = 64
 
-  def getSizeInventory(): Int = 1
+  val getSizeInventory: Int = 1
 
-  def getStackInSlot(slot: Int): net.minecraft.item.ItemStack = slot match {
+  def getStackInSlot(slot: Int): ItemStack = slot match {
       case 0 => inventory(0)
       case _ => null
   }
 
-  def getStackInSlotOnClosing(x$1: Int): net.minecraft.item.ItemStack = {
+  def getStackInSlotOnClosing(x$1: Int): ItemStack = {
     null
   }
 
-  def hasCustomInventoryName(): Boolean = true
+  val hasCustomInventoryName: Boolean = true
 
-  def isItemValidForSlot(x$1: Int,x$2: net.minecraft.item.ItemStack): Boolean = true
+  def isItemValidForSlot(x$1: Int,x$2: ItemStack): Boolean = true
 
-  def isUseableByPlayer(x$1: net.minecraft.entity.player.EntityPlayer): Boolean = true
+  def isUseableByPlayer(x$1: EntityPlayer): Boolean = true
 
   def openInventory(){}
 
-  def setInventorySlotContents(x$1: Int,x$2: net.minecraft.item.ItemStack){
+  def setInventorySlotContents(x$1: Int,x$2: ItemStack){
     inventory(0) = x$2
     FMLLog.info("%s",inventory)
   }
@@ -155,7 +145,7 @@ class ActuatorBlock(mat: Material) extends BlockContainer(mat: Material){
   }
 
   override def onBlockAdded(w: World, x: Int, y: Int, z: Int){
-    te.getNeighbors
+    //te.getNeighbors
   }
 
   override def onBlockActivated(w: World, x: Int, y: Int, z: Int, p: EntityPlayer, side: Int, xo: Float, yo: Float, zo: Float): Boolean = {
