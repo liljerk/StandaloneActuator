@@ -8,3 +8,6 @@ config/**
 crash-reports/**
 options.txt
 *.swp
+*.iml
+*.ipr
+*.iws
